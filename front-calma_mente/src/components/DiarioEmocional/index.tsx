@@ -19,14 +19,11 @@ const DUMMY_ENTRIES: JournalEntry[] = [
 ];
 
 const DiarioEmocional: React.FC = () => {
-  // Estado para a nova entrada
   const [newContent, setNewContent] = useState('');
   const [newTitle, setNewTitle] = useState('');
-  
-  // Estado para a lista de diários escritos
+    
   const [entries, setEntries] = useState<JournalEntry[]>(DUMMY_ENTRIES);
-  
-  // Estado para visualizar um diário salvo (não é o mesmo que 'newContent')
+    
   const [viewingEntry, setViewingEntry] = useState<JournalEntry | null>(null);
 
   const handleSave = () => {

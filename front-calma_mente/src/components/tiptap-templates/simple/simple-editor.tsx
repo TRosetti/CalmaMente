@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
-
+import "../../../styles/_keyframe-animations.scss";
+import "../../../styles/_variables.scss";
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
 import { Image } from "@tiptap/extension-image"
@@ -96,7 +97,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <HeadingDropdownMenu levels={[ 2, 3, 4]} portal={isMobile} />
+        <HeadingDropdownMenu levels={[ 1, 2, 3, 4]} portal={isMobile} />
         <ListDropdownMenu
           types={["bulletList", "orderedList", "taskList"]}
           portal={isMobile}
@@ -183,6 +184,8 @@ const MobileToolbarContent = ({
   </>
 )
 
+
+
 export function SimpleEditor() {
   const isMobile = useIsMobile()
   const { height } = useWindowSize()
@@ -238,7 +241,7 @@ export function SimpleEditor() {
 
   const rect = useCursorVisibility({
     editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+  
   })
 
   React.useEffect(() => {
@@ -249,9 +252,9 @@ export function SimpleEditor() {
   
 
   return (
-    <div className="simple-editor-wrapper bg-white flex-row width-fill rounded-lg border border-gray-300">
+    <div className="simple-editor-wrapper flex-row width-fill">
 
-      <div className="width-fill">
+      <div className="width-fill" >
           <EditorContext.Provider value={{ editor }}>
           <Toolbar
             ref={toolbarRef}
@@ -267,7 +270,7 @@ export function SimpleEditor() {
               <MainToolbarContent
                 onHighlighterClick={() => setMobileView("highlighter")}
                 onLinkClick={() => setMobileView("link")}
-                isMobile={isMobile}
+                isMobile={isMobile}              
               />
             ) : (
               <MobileToolbarContent
@@ -283,9 +286,7 @@ export function SimpleEditor() {
             className="simple-editor-content"
           />
         </EditorContext.Provider>
-      </div>
-      
-      
+      </div>                  
     </div>
   )
 }

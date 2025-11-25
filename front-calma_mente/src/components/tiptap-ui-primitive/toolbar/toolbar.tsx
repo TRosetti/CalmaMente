@@ -93,6 +93,7 @@ export const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(
         data-variant={variant}
         className={cn("tiptap-toolbar", className)}
         {...props}
+        style={{background: 'transparent'}}
       >
         {children}
       </div>

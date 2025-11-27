@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import CustomSelect from '@/components/CustomSelect'; 
+import CustomSelect from '@/components/UI/CustomSelect'; 
 import {AvailableAppointment} from '@/types/appointment'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";

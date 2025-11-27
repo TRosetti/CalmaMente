@@ -1,7 +1,7 @@
 import React from 'react';
-import CustomInput from '@/components/CustomInput/'
+import CustomInput from '@/components/UI/CustomInput'
 import { FormData, AccountType } from '@/types/form';
-import CustomSelect from '@/components/CustomSelect';
+import CustomSelect from '@/components/UI/CustomSelect';
 
 interface AccountDataFormProps {
   data: FormData;

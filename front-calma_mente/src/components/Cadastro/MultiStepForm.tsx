@@ -12,7 +12,7 @@ import { FormData, initialFormData } from '@/types/form';
 
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import Loading from '@/components/Loading';
+import Loading from '@/components/UI/Loading';
 
 const STEPS: Step[] = [
   { id: 1, label: 'Dados da conta' },

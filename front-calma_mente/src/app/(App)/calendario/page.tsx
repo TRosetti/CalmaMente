@@ -1,5 +1,5 @@
 import AppointmentPage from '@/components/Consultas'
-import SideBar from '@/components/SideBar'
+import SideBar from '@/components/UI/SideBar'
 
 export default function Calendario() {
     return(

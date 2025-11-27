@@ -1,8 +1,8 @@
-import CustomInput from '@/components/CustomInput/'
+import CustomInput from '@/components/UI/CustomInput'
 import { FormData } from '@/types/form';
 import ProfileImageUpload from '@/components/ProfileImageUpload';
 
-import CustomSelect from '@/components/CustomSelect';
+import CustomSelect from '@/components/UI/CustomSelect';
 
 interface AccountDataFormProps {
   data: FormData;

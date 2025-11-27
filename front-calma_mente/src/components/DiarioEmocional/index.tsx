@@ -4,8 +4,8 @@
 
 import React, { useState } from 'react';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor'
-
+import { SimpleEditor } from '@/components/TipTap/tiptap-templates/simple/simple-editor'
+import CustomSelect from '../UI/CustomSelect';
 interface JournalEntry {
   id: number;
   title: string;
@@ -148,7 +148,14 @@ const DiarioEmocional: React.FC = () => {
                     /> */}
 
                     <SimpleEditor initialContent={currentHtml} onContentChange={setCurrentHtml}/>
-                    
+                     {/* <CustomSelect 
+                        id="tipoMedico"
+                        label='Tipo médico'
+                        options={mentalHealthProfessionals}
+                        value={data.medicalType}
+                        onChange={(e) => updateData({ medicalType: e.target.value as  "Psiquiatra" | 'Psicologo' | 'Neuropsiquiatra' | 'Neurologista' | 'TerapeutaOcupacional' | 'Psicanalista' | 'EnfermeiroPsiquiatrico' | 'AssistenteSocial' | 'Terapeuta' })}
+                        required
+                      /> */}
                     <button 
                         onClick={handleSave}
                         className="w-full py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors"

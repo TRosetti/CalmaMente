@@ -1,6 +1,6 @@
 import { getAuthPayload } from '@/lib/auth';
-import SideBar from '@/components/SideBar'
-import LogoutButton from '@/components/LogoutButton';
+import SideBar from '@/components/UI/SideBar'
+import LogoutButton from '@/components/UI/LogoutButton';
 import { redirect } from 'next/navigation'; 
 
 export default async function ConfigPage() {

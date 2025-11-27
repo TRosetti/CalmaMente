@@ -1,0 +1,29 @@
+.navBlog a:hover{
+    background-color: var(--amarelo-yelly);
+}
+
+.navBlog{
+    a{
+        border: 1px solid #1a1a1a40;
+    }
+
+    .ativo{
+        border: 1px solid var(--amarelo-yelly);
+    }
+}
+
+@media(max-width: 680px){
+    
+    .navBlog{
+
+        padding: 8px 16px;
+        
+        a{
+            background-color: aliceblue;
+            font-size: 12px;
+            line-height: 16px;
+        }
+    }
+
+    
+}

@@ -1,4 +1,4 @@
-import SideBar from '@/components/SideBar'
+import SideBar from '@/components/UI/SideBar'
 
 export default function Perfil() {
     return(

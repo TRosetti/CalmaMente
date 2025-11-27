@@ -3,7 +3,7 @@
 'use client'; // Necessário para usar Hooks (useState, useEffect)
 
 import React, { useState, useEffect } from 'react';
-import CustomInput from '@/components/CustomInput/';
+import CustomInput from '@/components/UI/CustomInput';
 import { FormData } from '@/types/form';
 // import CustomSelect from '@/components/CustomSelect'; // Usaremos CustomSelect para o Estado/UF
 

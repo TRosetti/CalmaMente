@@ -1,5 +1,5 @@
 'use client'
-import SideBar from '@/components/SideBar'
+import SideBar from '@/components/UI/SideBar'
 import DiarioEmocional from '@/components/DiarioEmocional';
 
 

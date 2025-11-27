@@ -3,7 +3,7 @@
 'use client'; 
 
 import React, { useState } from 'react';
-import CustomInput from '@/components/CustomInput/';
+import CustomInput from '@/components/UI/CustomInput';
 import { FormData } from '@/types/form';
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline'; 
 

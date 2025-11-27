@@ -1,0 +1,65 @@
+[
+    {
+      "slug": "solucoes/conheca-a-yelly-plus-a-nova-maquininha-do-plano-economic",
+      "imgUrl": "/Blog/yelly-plus-1.png",
+      "imgAlt": "yelly-plus",
+      "categoria": "Soluções Yelly",
+      "data": "21/02/2025",
+      "titulo": "Conheça a Yelly PLUS: A nova maquininha do Plano Economic!",
+      "subtitulo": "Se você busca uma solução de pagamento moderna, econômica e sem pegadinhas, precisa conhecer a Yelly PLUS, a nova maquininha do Plano Economic da Yelly."
+    },
+    {
+      "slug": "solucoes/entre-as-principais-fintechs-do-brasil-yelly-indicada-ao-premio-ra-2024",
+      "imgUrl": "/Blog/principais-fintech-br-1.png",
+      "imgAlt": "principais-fintech-br",
+      "categoria": "Soluções Yelly",
+      "data": "24/01/2025",
+      "titulo": "Entre as Principais Fintechs do Brasil: Yelly indicada ao Prêmio RA 2024",
+      "subtitulo": "O Reclame Aqui é uma das plataformas mais relevantes para a reputação de empresas no Brasil. Além de ser um canal para resolver problemas entre consumidores e marcas, ele também promove um dos maiores eventos anuais do país voltados à experiência do cliente e à inovação empresarial: o Evento Reclame Aqui."
+    },
+    {
+      "slug": "solucoes/o-que-os-especialistas-dizem-sobre-a-yelly",
+      "imgUrl": "/Blog/o-que-os-especialistas-dizem.png",
+      "imgAlt": "o-que-os-especialistas-dizem",
+      "categoria": "Soluções Yelly",
+      "data": "19/03/2024",
+      "titulo": "O que os especialistas dizem sobre a Yelly?",
+      "subtitulo": "Descubra por que os especialistas estão falando sobre a Yelly. Conheça as maquininhas preferidas de todo brasileiro e mude o rumo do seu negócio!"
+    },
+    {
+      "slug": "negocios/pagamento-por-aproximacao-uma-vantagem-para-o-seu-negocio",      
+      "imgUrl": "/Blog/pagamento-por-aproximacao.png",
+      "imgAlt": "pagamento-por-aproximacao",
+      "categoria": "Negócios",
+      "data": "19/03/2024",
+      "titulo": "Pagamento por Aproximação: Uma vantagem para o seu negócio",
+      "subtitulo": "Descubra tudo sobre o pagamento NFC ou por Aproximação: tecnologia, segurança, praticidade e como adotar essa inovação no seu dia a dia."
+    },
+    {
+      "slug": "negocios/ja-imaginou-poder-lucrar-mais-com-o-seu-negocio",
+      "imgUrl": "/Blog/lucrar-mais-com-seu-negocio.webp",
+      "imgAlt": "lucrar-mais-com-seu-negocio",
+      "categoria": "Negócios",
+      "data": "10/01/2024",
+      "titulo": "Já imaginou poder lucrar mais com o seu negócio?",
+      "subtitulo": "Uma forma prática e simples que vai te ajudar a lucrar muito mais com cada venda realizada no seu negócio!"
+    },
+    {
+      "slug": "solucoes/o-mercado-das-maquininhas",    
+      "imgUrl": "/Blog/maquininhas-yelly.webp",
+      "imgAlt": "maquininhas-yelly",
+      "categoria": "Soluções Yelly",
+      "data": "10/01/2024",
+      "titulo": "O mercado das maquininhas!",
+      "subtitulo": "Entenda como o uso das maquininhas tem crescido cada vez mais no mercado e como ela pode colaborar para o seu negócio."
+    },
+    {
+      "slug": "economia/como-a-taxa-selic-pode-afetar-o-meu-negocio",
+      "imgUrl": "/Blog/taxa-selic.jpg",
+      "imgAlt": "taxa-selic",
+      "categoria": "Economia",
+      "data": "10/01/2024",
+      "titulo": "Como a Taxa Selic pode afetar o meu negócio?",
+      "subtitulo": "A taxa Selic está presente em tudo quanto é tipo de produto, tendo um papel importante na economia brasileira e pode até afetar suas finanças."
+    }
+]

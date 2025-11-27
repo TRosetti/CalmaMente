@@ -3,13 +3,13 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import { AppointmentItem } from '@/types/appointment';
 
 interface MyAppointmentsProps {
-    appointments: AppointmentItem[];    
-
+    appointments: AppointmentItem[];
+    onCancel: (id: string) => void;
 }
 
-const MyAppointments: React.FC<MyAppointmentsProps> = ({ appointments }) => {
-    
-    
+const MyAppointments: React.FC<MyAppointmentsProps> = ({ appointments, onCancel }) => {
+
+
     const getStatusColor = (status: string) => {
         switch (status) {
             case "Confirmada": return "text-green-600 bg-green-50 border-green-300";
@@ -19,20 +19,20 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({ appointments }) => {
         }
     };
 
-    
-    // const handleCancelClick = (id: number) => {
-        
-    //     if (window.confirm("Tem certeza que deseja cancelar esta consulta?")) {
-    //         // onCancelAppointment(id);
-    //     }
-    // };
+
+    const handleCancelClick = (id: string) => {
+
+        if (window.confirm("Tem certeza que deseja cancelar esta consulta?")) {
+            onCancel(id);
+        }
+    };
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
             <h2 className="text-2xl font-semibold mb-4 text-indigo-700 flex items-center gap-2">
                 <ClockIcon className="w-6 h-6" /> Minhas Consultas
             </h2>
-            
+
             <div className="space-y-4">
                 {appointments.length === 0 ? (
                     <p className="text-gray-500 italic">Você não possui consultas agendadas.</p>
@@ -46,15 +46,17 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({ appointments }) => {
                                 </span>
                             </div>
                             <p className="text-sm text-gray-700">{app.doctor}</p>
-                            
-                            <button 
-                                className="mt-2 text-xs text-red-500 hover:text-red-700 font-medium cursor-pointer"
-                                // Chama a função passando o ID da consulta
-                                // onClick={() => handleCancelClick(app.id)} 
-                            >
-                                Cancelar
-                            </button>
-                            
+
+                            {app.status !== 'Cancelada' && (
+                                <button
+                                    className="mt-2 text-xs text-red-500 hover:text-red-700 font-medium cursor-pointer"
+                                    // Chama a função passando o ID da consulta
+                                    onClick={() => handleCancelClick(app.id)}
+                                >
+                                    Cancelar
+                                </button>
+                            )}
+
                         </div>
                     ))
                 )}

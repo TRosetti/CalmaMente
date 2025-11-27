@@ -8,7 +8,6 @@ import { AvailableAppointment, AppointmentItem, AppointmentAPIResponse, DoctorAP
 
 interface AppointmentClientPageProps {
     userId: string;
-    userId: string;
 }
 
 const API_DOCTORS_URL = 'http://localhost:8081/medicos';
@@ -66,9 +65,6 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
     const [userAppointments, setUserAppointments] = useState<AppointmentItem[]>([]);
     const [loadingUser, setLoadingUser] = useState(true);
     const [errorUser, setErrorUser] = useState<string | null>(null);
-
-
-    const [occupiedSlots, setOccupiedSlots] = useState<string[]>([]); // Armazena a lista de dataHora ocupados
 
 
     // BUSCAR MÉDICOS DISPONÍVEIS (Serviços)
@@ -143,7 +139,7 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
 
         const { date, time } = data;
         const profissionalId = selectedAppointment.id;
-        const dataHora = `${date}T${time}:00`;
+        const dataHora = `${date}T${time}`;
 
         const appointmentData = {
             dataHora: dataHora,
@@ -195,69 +191,6 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
             alert("Ocorreu um erro de rede. Verifique a conexão com a API.");
         }
     };
-
-    const fetchOccupiedSlots = async (medicoId: string, startDate: string, endDate: string) => {
-
-        // As datas 'inicio' e 'fim' devem ser no formato ISO (YYYY-MM-DDT00:00:00)
-        const API_OCCUPIED_URL = `http://localhost:8081/agendamentos/ocupados/${medicoId}`;
-
-        try {
-            const response = await fetch(
-                `${API_OCCUPIED_URL}?inicio=${startDate}&fim=${endDate}`
-            );
-
-            if (!response.ok) {
-                throw new Error(`Erro ao buscar ocupados: ${response.status}`);
-            }
-
-            const data: OccupiedSlotAPIResponse[] = await response.json();
-
-            // 2. Usando o tipo correto no map
-            const occupiedTimes: string[] = data.map((app) => app.dataHora);
-
-            setOccupiedSlots(occupiedTimes);
-
-        } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
-            alert("Erro de rede ao tentar cancelar a consulta.");
-        }
-    }
-
-
-    useEffect(() => {
-        if (selectedAppointment) {
-
-            // --- CÁLCULO DA DATA INÍCIO ---
-            const today = new Date();
-            const startYear = today.getFullYear();
-            const startMonth = String(today.getMonth() + 1).padStart(2, '0');
-            const startDay = String(today.getDate()).padStart(2, '0');
-
-            // Formato: YYYY-MM-DDT00:00:00 (Início do dia)
-            const startDateString = `${startYear}-${startMonth}-${startDay} 00:00:00`;
-
-
-            // --- CÁLCULO DA DATA FIM ---
-            const futureDate = new Date();
-            futureDate.setDate(futureDate.getDate() + 30); // 30 dias à frente
-
-            const endYear = futureDate.getFullYear();
-            const endMonth = String(futureDate.getMonth() + 1).padStart(2, '0');
-            const endDay = String(futureDate.getDate()).padStart(2, '0');
-
-            // Formato: YYYY-MM-DDT23:59:59 (Fim do dia)
-            const endDateString = `${endYear}-${endMonth}-${endDay} 23:59:59`;
-
-
-            fetchOccupiedSlots(
-                String(selectedAppointment.id), // Garantindo que seja string para resolver o erro anterior
-                startDateString,
-                endDateString
-            );
-        } else {
-            setOccupiedSlots([]);
-        }
-    }, [selectedAppointment]);
 
     const handleCancelAppointment = async (appointmentId: string) => {
         const API_CANCEL_URL = `http://localhost:8081/agendamentos/${appointmentId}/cancelar`;
@@ -347,7 +280,6 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
                                 </h2>
                                 <ScheduleForm
                                     selectedAppointment={selectedAppointment}
-                                    occupiedSlots={occupiedSlots}
                                     onSubmit={handleScheduleSubmit}
                                 />
                             </section>

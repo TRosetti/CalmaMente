@@ -1,30 +1,20 @@
-import React, { useState } from 'react';
-
-import CustomSelect from '@/components/UI/CustomSelect'; 
-import {AvailableAppointment} from '@/types/appointment'
+import React, { useState, useEffect } from 'react';
+import { AvailableAppointment } from '@/types/appointment';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const TIME_OPTIONS = [
-    { value: "08:00", label: "08:00h" },
-    { value: "09:00", label: "09:00h" },
-    { value: "10:00", label: "10:00h" },
-    { value: "13:00", label: "13:00h" },
-    { value: "14:00", label: "14:00h" },
-    { value: "15:00", label: "15:00h" },
-    { value: "16:30", label: "16:30h" },
-];
-
 interface ScheduleFormProps {
     selectedAppointment: AvailableAppointment;
-    occupiedSlots: string[];
     onSubmit: (data: { date: string, time: string }) => void;
 }
 
-const ScheduleForm: React.FC<ScheduleFormProps> = ({ occupiedSlots, onSubmit }) => {    
- 
-    const [startDate, setStartDate] = useState<Date | null>(null);     
+const ScheduleForm: React.FC<ScheduleFormProps> = ({ selectedAppointment, onSubmit }) => {
+
+    const [startDate, setStartDate] = useState<Date | null>(null);
     const [time, setTime] = useState('');
+    const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+    const [loadingSlots, setLoadingSlots] = useState(false);
+    const [errorSlots, setErrorSlots] = useState<string | null>(null);
 
     const getFormattedLocalDate = (dateObj: Date): string => {
         const year = dateObj.getFullYear();
@@ -33,69 +23,134 @@ const ScheduleForm: React.FC<ScheduleFormProps> = ({ occupiedSlots, onSubmit }) 
         return `${year}-${month}-${day}`;
     };
 
+    // Regra de 48h de antecedência
+    const getMinDate = () => {
+        const today = new Date();
+        today.setDate(today.getDate() + 2); // Hoje + 2 dias
+        return today;
+    };
+
+    useEffect(() => {
+        const fetchAvailableSlots = async () => {
+            if (!startDate || !selectedAppointment) return;
+
+            setLoadingSlots(true);
+            setErrorSlots(null);
+            setAvailableSlots([]);
+            setTime(''); // Limpa seleção anterior
+
+            const dateString = getFormattedLocalDate(startDate);
+            const API_URL = `http://localhost:8081/agendamentos/disponiveis?medicoId=${selectedAppointment.id}&data=${dateString}`;
+
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar horários: ${response.status}`);
+                }
+                const data: string[] = await response.json();
+                setAvailableSlots(data);
+            } catch (err) {
+                console.error("Erro ao buscar slots:", err);
+                setErrorSlots("Não foi possível carregar os horários. Tente novamente.");
+            } finally {
+                setLoadingSlots(false);
+            }
+        };
+
+        fetchAvailableSlots();
+    }, [startDate, selectedAppointment]);
+
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!startDate || !time) {
             alert("Por favor, selecione a data e o horário.");
             return;
         }
-        
-        const formattedDate = getFormattedLocalDate(startDate);
 
+        const formattedDate = getFormattedLocalDate(startDate);
         onSubmit({ date: formattedDate, time });
     };
 
-    
-    const filteredTimeOptions = TIME_OPTIONS.filter(option => {        
-        if (!startDate) return true; 
-        const formattedDate = getFormattedLocalDate(startDate);        
-        const checkTime = `${formattedDate} ${option.value}:00`; 
-            
-        return !occupiedSlots.includes(checkTime);
-    });
-    
-
     return (
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <h3 className="text-xl font-medium">Selecione Data e Hora</h3>
-            
-            <label className="block text-sm font-medium text-gray-700" htmlFor="schedule_date">
-                Data Desejada
-            </label>
-            <DatePicker
-                id="schedule_date"
-                selected={startDate}
-                onChange={(date: Date | null) => {
-                    setStartDate(date);
-                    setTime('');
-                }}
-                minDate={new Date()} 
-                dateFormat="dd/MM/yyyy"
-                className="w-full border border-gray-300 p-2 rounded-lg"
-                placeholderText="Selecione uma data"
-                required
-            />
-            
-            <CustomSelect
-                label="Horário"
-                id="schedule_time"
-                value={time}                
-                options={filteredTimeOptions}
-                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setTime(e.target.value)}
-                required
-            />
-            
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+            {/* 1. Seleção de Data */}
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="schedule_date">
+                    Data Desejada (Mínimo 48h de antecedência)
+                </label>
+                <DatePicker
+                    id="schedule_date"
+                    selected={startDate}
+                    onChange={(date: Date | null) => setStartDate(date)}
+                    minDate={getMinDate()}
+                    dateFormat="dd/MM/yyyy"
+                    className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                    placeholderText="Selecione uma data"
+                    required
+                />
+            </div>
+
+            {/* 2. Seleção de Horário (Grid de Botões) */}
+            {startDate && (
+                <div className="animate-fade-in">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                        Horários Disponíveis
+                    </label>
+
+                    {loadingSlots && (
+                        <div className="flex justify-center py-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                        </div>
+                    )}
+
+                    {errorSlots && (
+                        <p className="text-red-500 text-sm">{errorSlots}</p>
+                    )}
+
+                    {!loadingSlots && !errorSlots && availableSlots.length === 0 && (
+                        <p className="text-gray-500 text-sm italic">Nenhum horário disponível para esta data.</p>
+                    )}
+
+                    {!loadingSlots && !errorSlots && availableSlots.length > 0 && (
+                        <div className="grid grid-cols-3 gap-3">
+                            {availableSlots.map((slot) => (
+                                <button
+                                    key={slot}
+                                    type="button"
+                                    onClick={() => setTime(slot)}
+                                    className={`
+                                        py-2 px-4 rounded-md text-sm font-medium transition-all
+                                        ${time === slot
+                                            ? 'bg-indigo-600 text-white shadow-md transform scale-105'
+                                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 hover:border-indigo-300'}
+                                    `}
+                                >
+                                    {slot.substring(0, 5)}h
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* 3. Botão de Confirmação */}
             <button
                 type="submit"
-                className="w-full py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors"
+                disabled={!startDate || !time}
+                className={`
+                    w-full py-3 font-bold rounded-lg transition-colors
+                    ${(!startDate || !time)
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-green-500 text-white hover:bg-green-600 shadow-lg'}
+                `}
             >
                 Confirmar Agendamento
             </button>
         </form>
-        
-       
     );
 };
+
 export default ScheduleForm;

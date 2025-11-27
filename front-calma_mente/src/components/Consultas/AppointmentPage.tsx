@@ -5,9 +5,9 @@ import AppointmentCard from './AppointmentCard';
 import ScheduleForm from './ScheduleForm';
 import MyAppointments from './MyAppointments';
 import { AvailableAppointment, AppointmentItem, AppointmentAPIResponse, DoctorAPIResponse } from '@/types/appointment';
-import { OccupiedSlotAPIResponse } from '@/types/appointment';
 
 interface AppointmentClientPageProps {
+    userId: string;
     userId: string;
 }
 
@@ -218,8 +218,8 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
             setOccupiedSlots(occupiedTimes);
 
         } catch (error) {
-            console.error("Erro ao buscar horários ocupados:", error);
-            setOccupiedSlots([]); // Limpa em caso de erro
+            console.error("Erro ao cancelar consulta:", error);
+            alert("Erro de rede ao tentar cancelar a consulta.");
         }
     }
 

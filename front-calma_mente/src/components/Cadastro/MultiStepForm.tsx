@@ -14,6 +14,19 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import Loading from '@/components/UI/Loading';
 
+const converterDataParaISO = (dataBrasileira: string): string => {
+  if (!dataBrasileira) return "";
+  // Se já vier no formato certo (proteção), devolve
+  if (dataBrasileira.includes('-')) return dataBrasileira;
+
+  // Quebra "21/03/2002" em partes
+  const partes = dataBrasileira.split('/');
+  if (partes.length !== 3) return dataBrasileira; // Retorna original se falhar
+
+  // Remonta como "2002-03-21" (Ano-Mês-Dia)
+  return `${partes[2]}-${partes[1]}-${partes[0]}`;
+};
+
 const STEPS: Step[] = [
   { id: 1, label: 'Dados da conta' },
   { id: 2, label: 'Dados pessoais' },
@@ -112,99 +125,73 @@ const MultiStepForm: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      // 1. Criar usuário no Supabase Auth
-      setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      });
+      // --- MUDANÇA PRINCIPAL: Não chamamos mais o supabase.auth aqui.
+      // Enviamos tudo para o Backend Java, que fará o cadastro completo.
 
-      if (authError) throw authError;
-      if (!authData.user) throw new Error('Erro ao criar usuário no Auth.');
+      let endpoint = '';
+      let body = {};
 
-      const userId = authData.user.id;
-
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-
-      if (!token) {
-             // Isso pode acontecer se o email precisar ser confirmado primeiro,
-             // mas assumindo que não há confirmação, é um erro de sessão.
-        throw new Error('Falha ao obter token de acesso para autenticar o backend.');
-      }
-
-      // 2. Enviar dados complementares para o Backend Java
-      let endpoint = '';
-      let body = {};
-
-      const headers = { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // <--- ENVIANDO O TOKEN AQUI
+      // 1. Prepara os dados comuns (Baseado no CadastroPacienteDTO e CadastroMedicoDTO do Java)
+      const dadosComuns = {
+          email: formData.email,
+          password: formData.password,
+          nome: formData.fullName,
+          telefone: formData.phone,
+          cpf: formData.cpf,
+          dataNascimento: converterDataParaISO(formData.birthDate), 
+          genero: formData.gender
       };
-      
 
-      if (formData.accountType === 'client') {
-        // Para paciente, atualizamos o usuário criado pelo Trigger
-        endpoint = `http://localhost:8081/usuarios/${userId}`;
-        body = {
-          nome: formData.fullName,
-          telefone: formData.phone,
-          cpf: formData.cpf,
-          dataNascimento: formData.birthDate, // Certifique-se que o formato é YYYY-MM-DD
-          genero: formData.gender,
-          tipo: 'paciente'
+      if (formData.accountType === 'client') {
+        // Rota de Paciente
+        endpoint = `http://localhost:8081/auth/registrar/paciente`;
+        body = {
+            ...dadosComuns,
+            tipo: 'paciente' // Opcional se o Java já define fixo, mas mal não faz
         };
 
-        // PUT para atualizar
-        const response = await fetch(endpoint, {
-          method: 'PUT',
-          headers: headers,
-          body: JSON.stringify(body)
-        });
+      } else {
+        // Rota de Médico
+        endpoint = `http://localhost:8081/auth/registrar/medico`;
+        body = {
+            ...dadosComuns,
+            // Campos específicos do DTO de médico
+            crm: formData.medicalRegistration,
+            cnpj: formData.cnpj,
+            especialidade: formData.medicalType 
+        };
+      }
 
-        if (!response.ok) throw new Error('Erro ao salvar dados do paciente.');
+      // 2. Envia para o Backend (Agora é sempre POST e não precisa de Token Bearer ainda)
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+          // Não enviamos Authorization header pois é um cadastro público
+        },
+        body: JSON.stringify(body)
+      });
 
-      } else {
-        // Para médico, usamos o endpoint específico
-        endpoint = `http://localhost:8081/medicos/completar-cadastro`;
-        body = {
-          usuarioId: userId,
-          nome: formData.fullName,
-          telefone: formData.phone,
-          cpf: formData.cpf,
-          dataNascimento: formData.birthDate,
-          genero: formData.gender,
-          crm: formData.medicalRegistration,
-          cnpj: formData.cnpj,
-          especialidade: formData.medicalType // Adicione campo no form se necessário
-        };
-
-        // POST para criar médico
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify(body)
-        });
-
-        if (!response.ok) throw new Error('Erro ao salvar dados do médico.');
+      if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Erro no servidor: ${errorText}`);
       }
 
-     
-      
-      router.push("/");
-     
+      // 3. Sucesso!
+      alert('Cadastro realizado com sucesso! Faça login para continuar.');
+      router.push("/login");
 
-    } catch (error) {
-        console.error(error);
-        const errorMessage = error instanceof Error ? error.message : "Erro desconhecido. Verifique o console.";
-        alert('Erro no cadastro: ' + errorMessage);
-    }finally {
-      
-        setIsLoading(false); 
-    }
-  };
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error instanceof Error ? error.message : "Erro desconhecido.";
+        alert('Erro no cadastro: ' + errorMessage);
+    } finally {
+        setIsLoading(false); 
+    }
+  };
 
   const nextStep = () => {
     if (currentStep < STEPS.length) {

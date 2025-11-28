@@ -1,10 +1,11 @@
+import Jardim from '@/components/Jardim'
 import SideBar from '@/components/UI/SideBar'
 
-export default function Jardim() {
+export default function JardimPage() {
     return(
         <main className='flex-row'>
             <SideBar pagina='/jardim'/>
-            <h1>Jardim</h1>
+            <Jardim />
         </main>
     )
 }

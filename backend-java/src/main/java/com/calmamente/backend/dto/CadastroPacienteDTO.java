@@ -4,7 +4,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class CadastroMedicoDTO {
+public class CadastroPacienteDTO {
     private String email;
     private String password;
     private String nome;
@@ -12,8 +12,4 @@ public class CadastroMedicoDTO {
     private String cpf;
     private LocalDate dataNascimento;
     private String genero;
-    // Campos específicos de médico
-    private String crm;
-    private String cnpj;
-    private String especialidade;
 }

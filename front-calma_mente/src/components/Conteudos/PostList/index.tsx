@@ -24,7 +24,7 @@ export function PostList({ posts, titulo = ""}: PostsListProps) {
 
 
   return (
-    <div className={`container flex-col gap-32 align-center ${styles.postsContainer}`}>
+    <div className={`flex-col gap-32 align-center ${styles.postsContainer}`}>
       
       {titulo != '' && ( 
          <div className="flex-row justify-between width-fill flex-col-sm gap-16-sm text-center-sm">

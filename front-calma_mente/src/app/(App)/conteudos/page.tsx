@@ -51,15 +51,15 @@ export default async function PaginaConteudos() {
   return (
     <main className="flex-row">
       <SideBar pagina='/conteudos'/>
-      <div className={styles.app}>
-    
-      <HeroBlog post={heroPost}/>
-      <NavBlog categorias={categoriasParaNav} />
-      <PostList posts={otherPosts}/>
-     
+      <div className={`${styles.app} p-8 bg-gray-50 min-h-screen w-full`}>
+      
+        <HeroBlog post={heroPost}/>
+        <NavBlog categorias={categoriasParaNav} />
+        <PostList posts={otherPosts}/>
+      
 
-   
-    </div>  
+    
+      </div>  
     </main>
     
   );

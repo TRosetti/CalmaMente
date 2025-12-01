@@ -22,11 +22,11 @@ export default function HeroBlog({ post }: ultimoPost){
 
 
     return(
-      <section id="Hero">
-        <div className={`container flex-col gap-32 ${styles.hero}`}>
+      <section id="Hero ">
+        <div className={`flex-col gap-32 ${styles.hero}`}>
           <div className={`${styles.titulo} flex-col gap-8`}>
-            <h1>Blog</h1>
-            <p>Tudo o que você precisa saber para vender mais e de forma inteligente.</p>
+            <h1>Conteudos</h1>
+            <p>Onde o Autoconhecimento Encontra a Tranquilidade. <br /> Guias e artigos práticos para nutrir a sua mente, cultivar o equilíbrio emocional e construir uma vida mais serena.</p>
           </div>
           <div className={`flex-row flex-col-lg gap-64 align-center ${styles.heroConteudo}`}>
             <div className={`${styles.heroImgConainer}`}>

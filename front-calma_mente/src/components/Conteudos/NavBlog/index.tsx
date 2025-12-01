@@ -13,7 +13,7 @@ type Props = {
 export default async function NavBlog({categoria = "todos", categorias}:Props){
 
   return(
-  <nav className={`container flex-row gap-8 py-0 grid-col-2-sm ${styles.navBlog}`}>
+  <nav className={`flex-row gap-8 py-0 grid-col-2-sm ${styles.navBlog}`}>
     <Link href="/blog" className={`py-8 px-16 border-radius-4 text-center bg-branco ${categoria === "todos" ? styles.ativo : ''}`}>
       Todos posts
     </Link>

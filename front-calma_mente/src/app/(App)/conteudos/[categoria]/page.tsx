@@ -1,7 +1,5 @@
-import { Header } from "@/components/Header"
-import { Tarja } from "@/components/Tarja";
+
 // import { Hero } from "@/components/Hero";
-import { Footer } from "@/components/Footer";
 import styles from './page.module.css'
 import HeroBlog from "@/components/Conteudos/HeroBlog";
 import NavBlog from "@/components/Conteudos/NavBlog";
@@ -9,7 +7,7 @@ import { PostList } from "@/components/Conteudos/PostList";
 import { categoriasFormatadas } from "@/data/categoriasBlog";
 
 import { notFound } from "next/navigation";
-import { getPostByCategory } from "@/lib/conteudos-cache";
+import { getConteudoByCategory } from "@/lib/conteudos-cache";
 
 
 interface CategoriaPageProps {
@@ -32,7 +30,7 @@ export default async function PaginaBlogCategoria({params}:CategoriaPageProps ) 
   let posts = [];
 
   try {
-    posts = await getPostByCategory(categoria);
+    posts = await getConteudoByCategory(categoria);
   } catch (err) {
     console.error('Erro ao buscar posts:', err);
     return <div>Não foi possível carregar os posts.</div>;
@@ -69,12 +67,11 @@ export default async function PaginaBlogCategoria({params}:CategoriaPageProps ) 
 
   return (
     <div className={styles.app}>
-      <Tarja />
-      <Header />
+
       <HeroBlog post={heroPost}/>
       <NavBlog categorias={categoriasParaNav} categoria={categoria}/>
       <PostList posts={otherPosts}/>
-      <Footer />
+
     </div>  
   );
 }

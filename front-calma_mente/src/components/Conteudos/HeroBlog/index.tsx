@@ -30,7 +30,7 @@ export default function HeroBlog({ post }: ultimoPost){
           </div>
           <div className={`flex-row flex-col-lg gap-64 align-center ${styles.heroConteudo}`}>
             <div className={`${styles.heroImgConainer}`}>
-             <Link href={`/blog/${post.slug}`}>
+             <Link href={`/conteudos/${post.slug}`}>
               <Image src={post.imagem_url} alt={post.imagem_alt} width={550} height={314} layout="responsive" priority={true} className="border-radius-8" />
              </Link>
              
@@ -44,14 +44,14 @@ export default function HeroBlog({ post }: ultimoPost){
               <div className="flex-col gap-4" >
                 <h2>
                  
-                  <Link href={`/blog/${post.slug}`}>
+                  <Link href={`/conteudos/${post.slug}`}> 
                     {post.titulo}
                   </Link>
               </h2>
                 <p>{post.subtitulo}</p>
               </div>
               
-              <Link href={`/blog/${post.slug}`} className="flex-row gap-8 align-center">
+              <Link href={`/conteudos/${post.slug}`} className="flex-row gap-8 align-center">
                 Ler mais
                 <Image src='/SetaSlide.svg' alt="seta"  width={8} height={12} style={{transform: "rotate(180deg)"}}/> 
               </Link>

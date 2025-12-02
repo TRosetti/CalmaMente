@@ -1,5 +1,5 @@
 .navBlog a:hover{
-    background-color: var(--amarelo-yelly);
+    background-color: #a684ff;
 }
 
 .navBlog{
@@ -8,7 +8,7 @@
     }
 
     .ativo{
-        border: 1px solid var(--amarelo-yelly);
+        border: 1px solid #a684ff;
     }
 }
 

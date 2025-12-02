@@ -7,38 +7,27 @@ import { SimpleEditor } from '@/components/TipTap/tiptap-templates/simple/simple
 
 // --- NOVAS INTERFACES DE TIPAGEM ---
 
-// 1. Interface para o objeto de entrada Mapeada (seu estado)
+
 interface JournalEntry {
-  id: string; // IDs devem ser string para corresponder ao UUID do backend
+  id: string; 
   title: string;
-  content: string; // Conteúdo HTML
+  content: string;
   date: string;
 }
 
-// 2. Interface para o objeto de dados BRUTOS retornado pelo backend (diario)
-// Isso resolve o erro 'any' no .map()
 interface RawEntry {
   id: string;
   conteudo: string; // O campo JSON string
   dataCriacao: string; // A data como string
-  // Adicione outros campos, se houverem (ex: tipo, compartilhado, etc.)
+
 }
 
-// 3. Interface para o objeto dentro da string JSON de 'conteudo'
 interface RawContent {
     title: string;
     html: string;
 }
 
-// 4. Interface para o Payload de Autenticação
-// Isso resolve o erro 'Property 'uid' does not exist on type 'JWTPayload''
-// Assumimos que 'getAuthPayload' retorna um objeto com 'uid'
-interface CustomAuthPayload {
-    uid: string; // A propriedade que você está usando
-    // Outros campos do JWT (exp, iat, etc.)
-}
-// Certifique-se de que a função `getAuthPayload` está definida em '@/lib/auth' para retornar Promise<CustomAuthPayload | null>
-// Ex: export const getAuthPayload = (): Promise<CustomAuthPayload | null> => { ... };
+
 
 // --- CONSTANTES ---
 
@@ -111,13 +100,12 @@ function DiarioEmocional({id_usuario}: {id_usuario: string}) {
       }
     }
     initialize();
-  }, [fetchEntries]); 
-
-  // ... [Resto do código omitido para brevidade, pois a lógica não foi alterada] ...
+  }, [fetchEntries, id_usuario]); 
 
     // 2. FUNÇÃO SALVAR (POST)
     const handleSave = async () => {
-        // Usamos currentHtml do SimpleEditor
+        const currentUserId = id_usuario;
+
         if (!newTitle.trim() || !currentHtml.trim()) {
             alert("Título e conteúdo do diário não podem estar vazios.");
             return;
@@ -130,9 +118,10 @@ function DiarioEmocional({id_usuario}: {id_usuario: string}) {
                     title: newTitle.trim(), 
                     html: currentHtml 
                 } as RawContent), // Tipagem para garantir a estrutura
-                tipo: 'texto',
+                // tipo: 'texto',
                 compartilhado: false,
                 humorDetectado: null,
+                usuarioId: currentUserId,
             };
 
             const response = await fetch(API_URL, {
@@ -141,6 +130,7 @@ function DiarioEmocional({id_usuario}: {id_usuario: string}) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(payload),
+                
             });
 
             if (!response.ok) {
@@ -161,10 +151,39 @@ function DiarioEmocional({id_usuario}: {id_usuario: string}) {
 
 
     // 3. FUNÇÃO DELETAR (DELETE)
-    const handleDelete = (id: string) => {
-        if (window.confirm("Tem certeza que deseja deletar esta entrada?")) {
-            setEntries(entries.filter(e => e.id !== id));
-            if (viewingEntry?.id === id) setViewingEntry(null);
+    const handleDelete = async (id: string) => { // Tornamos a função assíncrona
+        if (!window.confirm("Tem certeza que deseja deletar esta entrada?")) {
+            return; // Sai se o usuário cancelar
+        }
+        
+        try {
+            // ✅ IMPLEMENTAÇÃO REAL: Chamada DELETE para o backend
+            const response = await fetch(`${API_URL}/${id}`, { 
+                method: 'DELETE' 
+            });
+
+            // O backend deve retornar 204 (No Content) ou 200 (OK) em caso de sucesso
+            if (!response.ok) {
+                // Se a exclusão falhar no servidor
+                throw new Error(`Falha ao deletar diário: ${response.statusText} (${response.status})`);
+            }
+
+            // ✅ ATUALIZAÇÃO LOCAL (se o delete no backend for bem-sucedido)
+            // Remove o item da lista localmente
+            setEntries(prevEntries => prevEntries.filter(e => e.id !== id));
+            
+            // Limpa a visualização se o item deletado era o que estava sendo visualizado
+            if (viewingEntry?.id === id) {
+                setViewingEntry(null);
+                setCurrentHtml(''); // Limpa o editor
+                setNewTitle('');
+            }
+            
+            console.log(`Diário com ID ${id} deletado com sucesso.`);
+
+        } catch (error) {
+            console.error("Erro ao deletar o diário:", error);
+            alert("Erro ao deletar o diário. Verifique o console e o backend.");
         }
     };
 
@@ -240,23 +259,26 @@ function DiarioEmocional({id_usuario}: {id_usuario: string}) {
             </div>
 
             {/* 📌 COLUNA DIREITA: EDITOR / VISUALIZADOR */}
-            <div className="w-2/3 space-y-4">
+<div className="w-2/3 space-y-4">
                 
                 {viewingEntry ? (
-                    // MODO DE VISUALIZAÇÃO
+                    // MODO DE VISUALIZAÇÃO (ENTRADA SALVA)
                     <div className="space-y-4">
                         <h2 className="text-3xl font-bold text-gray-800">{viewingEntry.title}</h2>
                         <p className="text-sm text-gray-600 border-b pb-2">Visualizando entrada de: {viewingEntry.date}</p>
 
                         <SimpleEditor 
+                            // ✅ FIX: Usa o ID como chave. Se o ID mudar, o editor é recriado.
+                            key={viewingEntry.id}
                             initialContent={viewingEntry.content} 
-                            onContentChange={setCurrentHtml}
-                            // editable={false} 
+                            // Em modo de visualização pura, remova o onContentChange.
+                            // onContentChange={setCurrentHtml}                            
+                            editable={false} // Garante que o modo é de leitura.
                         />
                     </div>
 
                 ) : (
-                    // MODO DE CRIAÇÃO
+                    // MODO DE CRIAÇÃO (NOVA ENTRADA)
                     <div className="space-y-4">
                         <h2 className="text-2xl font-semibold text-violet-700">Nova Entrada</h2>
                         
@@ -270,9 +292,13 @@ function DiarioEmocional({id_usuario}: {id_usuario: string}) {
                         />
                         
                         <SimpleEditor 
+                            // ✅ FIX: Usa uma chave estática diferente.
+                            // Quando você clica em 'Criar Nova Entrada', o key muda (null -> 'new-entry')
+                            // Quando você salva e volta para este modo, ele também é recriado.
+                            key="new-entry-editor" 
                             initialContent={currentHtml} 
                             onContentChange={setCurrentHtml}
-                            // editable={true} 
+                            editable={true} // Garante que o modo é de edição.
                         />
 
                         <button 

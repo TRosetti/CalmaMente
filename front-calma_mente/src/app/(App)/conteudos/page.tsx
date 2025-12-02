@@ -51,7 +51,7 @@ export default async function PaginaConteudos() {
   return (
     <main className="flex-row">
       <SideBar pagina='/conteudos'/>
-      <div className={`${styles.app} p-8 bg-gray-50 min-h-screen w-full`}>
+      <div className={`${styles.app} p-8 bg-gray-50 min-h-screen w-full flex-col gap-32`}>
       
         <HeroBlog post={heroPost}/>
         <NavBlog categorias={categoriasParaNav} />

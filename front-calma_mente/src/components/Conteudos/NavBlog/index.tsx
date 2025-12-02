@@ -13,12 +13,12 @@ type Props = {
 export default async function NavBlog({categoria = "todos", categorias}:Props){
 
   return(
-  <nav className={`flex-row gap-8 py-0 grid-col-2-sm ${styles.navBlog}`}>
-    <Link href="/blog" className={`py-8 px-16 border-radius-4 text-center bg-branco ${categoria === "todos" ? styles.ativo : ''}`}>
+  <nav className={` flex-row gap-8 py-0 grid-col-2-sm ${styles.navBlog}`}>
+    <Link href="/conteudos" className={`py-8 px-16 border-radius-4 text-center bg-branco ${categoria === "todos" ? styles.ativo : ''}`}>
       Todos posts
     </Link>
     {categorias.map((cat) => (
-      <Link key={cat.slug} href={`/blog/${cat.slug}`} className={`py-8 px-16 border-radius-4 text-center bg-branco  ${categoria === cat.slug ? styles.ativo : ''}`}>
+      <Link key={cat.slug} href={`/conteudos/${cat.slug}`} className={`py-8 px-16 border-radius-4 text-center bg-branco  ${categoria === cat.slug ? styles.ativo : ''}`}>
         {cat.nome}
       </Link>
     ))} 

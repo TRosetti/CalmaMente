@@ -8,7 +8,7 @@ import { categoriasFormatadas } from "@/data/categoriasBlog";
 
 import { notFound } from "next/navigation";
 import { getConteudoByCategory } from "@/lib/conteudos-cache";
-
+import SideBar from "@/components/UI/SideBar";
 
 interface CategoriaPageProps {
   params: Promise<{
@@ -66,12 +66,17 @@ export default async function PaginaBlogCategoria({params}:CategoriaPageProps ) 
 
 
   return (
-    <div className={styles.app}>
+    <main className="flex-row">
+      <SideBar pagina='/conteudos'/>
+      <div className={`${styles.app} p-8 bg-gray-50 min-h-screen w-full flex-col gap-32`}>
+      
+        <HeroBlog post={heroPost}/>
+        <NavBlog categorias={categoriasParaNav} />
+        <PostList posts={otherPosts}/>
+      
 
-      <HeroBlog post={heroPost}/>
-      <NavBlog categorias={categoriasParaNav} categoria={categoria}/>
-      <PostList posts={otherPosts}/>
-
-    </div>  
+    
+      </div>  
+    </main>  
   );
 }

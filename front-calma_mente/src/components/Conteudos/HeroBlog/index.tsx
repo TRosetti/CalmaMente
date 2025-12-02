@@ -23,7 +23,7 @@ export default function HeroBlog({ post }: ultimoPost){
 
     return(
       <section id="Hero ">
-        <div className={`flex-col gap-32 ${styles.hero}`}>
+        <div className={` flex-col gap-32 ${styles.hero}`}>
           <div className={`${styles.titulo} flex-col gap-8`}>
             <h1>Conteudos</h1>
             <p>Onde o Autoconhecimento Encontra a Tranquilidade. <br /> Guias e artigos práticos para nutrir a sua mente, cultivar o equilíbrio emocional e construir uma vida mais serena.</p>

@@ -149,6 +149,10 @@ const ScheduleForm: React.FC<ScheduleFormProps> = ({ selectedAppointment, onSubm
             >
                 Confirmar Agendamento
             </button>
+            {/* <button className=' w-full py-3 font-bold rounded-lg border-2 border-violet-300 text-gray-500 hover:bg-gray-100 transition-colors' onClick={() => window.history.back()}>
+                Cancelar
+            </button> */}
+
         </form>
     );
 };

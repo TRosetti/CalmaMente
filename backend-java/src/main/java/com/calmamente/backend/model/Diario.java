@@ -21,9 +21,9 @@ public class Diario {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoDiario tipo;
+    // @Enumerated(EnumType.STRING)
+    // @Column(nullable = false)
+    // private TipoDiario tipo;
 
 
 

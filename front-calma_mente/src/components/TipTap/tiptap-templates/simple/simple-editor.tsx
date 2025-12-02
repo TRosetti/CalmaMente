@@ -187,10 +187,11 @@ const MobileToolbarContent = ({
 
 interface SimpleEditorProps {
   initialContent: string;
-  onContentChange: (html: string) => void;
+  onContentChange?: (html: string) => void;
+  editable?: boolean;
 }
 
-export function SimpleEditor({initialContent, onContentChange}: SimpleEditorProps) {
+export function SimpleEditor({initialContent, onContentChange, editable = true}: SimpleEditorProps) {
   const isMobile = useIsMobile()
   const { height } = useWindowSize()
 
@@ -202,13 +203,16 @@ export function SimpleEditor({initialContent, onContentChange}: SimpleEditorProp
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
-
+    editable: editable,
     content: initialContent,
 
     onUpdate: ({ editor }) => {
       const newHtml = editor.getHTML();
 
-      onContentChange(newHtml);
+      if (onContentChange){
+        onContentChange(newHtml);
+      }
+      
     },
     editorProps: {
       attributes: {

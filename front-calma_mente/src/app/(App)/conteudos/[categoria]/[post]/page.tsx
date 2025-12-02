@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
-import { Header } from "@/components/Header";
-import { Tarja } from "@/components/Tarja";
-import { Footer } from "@/components/Footer";
+
 import styles from './page.module.css';
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +7,8 @@ import { categoriasFormatadas } from "@/data/categoriasBlog";
 
 import ConteudoBlog from "@/components/Conteudos/ConteudoBlog";
 import { PostList } from "@/components/Conteudos/PostList";
-import { getPostBySlug, getLimitedPost } from "@/lib/conteudos-cache";
+import { getConteudoBySlug , getLimitedConteudo } from "@/lib/conteudos-cache";
+import SideBar from "@/components/UI/SideBar";
 
 interface PostPageProps {
   
@@ -35,7 +34,7 @@ export default async function PostPage({ params }: PostPageProps) {
   let postData = [];
   
   try {
-    postData = await getPostBySlug(fullSlug);
+    postData = await getConteudoBySlug(fullSlug);
   } catch (err) {
     console.error('Erro ao buscar posts:', err);
     return <div>Não foi possível carregar os posts.</div>;
@@ -57,7 +56,7 @@ export default async function PostPage({ params }: PostPageProps) {
   let outrosPosts = [];
   
   try {
-    outrosPosts = await getLimitedPost();
+    outrosPosts = await getLimitedConteudo();
   } catch (err) {
     console.error('Erro ao buscar posts relacionados:', err);
     return <div>Não foi possível carregar os posts.</div>;
@@ -77,15 +76,14 @@ export default async function PostPage({ params }: PostPageProps) {
   
 
   return (
-    <div className={styles.app}>
-      <Tarja />
-      <Header />
-      <main className="">
-        <div className="container flex-col gap-32">
+    <div className={` flex-row ${styles.app}`}>
+      <SideBar />
+      <main className="container">
+        <div className=" flex-col gap-32">
           <div className={`${styles.nav} flex-row gap-8 align-center`}>
-            <Link href='/blog'>Blog</Link>
+            <Link href='/conteudos'>Blog</Link>
             <Image src="/dropdownNav.svg" alt="seta" width={9} height={16} style={{transform: "rotate(-90deg)"}}/>
-            <Link href={`/blog/${categoria}`}>{foundPost.categoria}</Link>
+            <Link href={`/conteudos/${categoria}`}>{foundPost.categoria}</Link>
           </div>
           <div className={`${styles.titulo} flex-col gap-8`}>
             <div className={`flex-row gap-8 align-center ${styles.meta}`}>
@@ -101,7 +99,7 @@ export default async function PostPage({ params }: PostPageProps) {
         <ConteudoBlog post={foundPost}/>
         <PostList posts={tresPostsRelacionados} titulo="Veja também"/>
       </main>
-      <Footer />
+
     </div>
   );
 }

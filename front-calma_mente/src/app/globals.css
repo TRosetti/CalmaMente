@@ -20,7 +20,7 @@ body {
 }
 
 .color-amarelo-yelly{
-  color: var(--amarelo-yelly);
+  color: #a684ff;
 }
 
 .color-amarelo-claro{
@@ -255,7 +255,7 @@ body {
   border: 1px solid var(--color-preto);
 }
 .border-1-yelly{
-  border: 1px solid var(--amarelo-yelly);
+  border: 1px solid #a684ff;
 }
 .border-radius-4{
   border-radius: 4px;

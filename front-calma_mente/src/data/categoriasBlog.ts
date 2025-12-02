@@ -1,5 +1,6 @@
 export const categoriasFormatadas = {
-    economia: 'Economia',
-    negocios: 'Negócios',
-    solucoes: 'Soluções Yelly'
+    ansiedade: 'Ansiedade',
+    educacao: 'Educação',
+    saude: 'Saúde Mental',
+    panico: 'Pânico'
 };

@@ -15,10 +15,10 @@ export default async function ConfigPage() {
 
     
     return(
-        <div className='flex flex-row'>
+        <div className='flex flex-row bg-white '>
             <SideBar />
           
-            <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc' }}>
+            <div style={{ border: '1px solid #ccc', width: '100%' }} className='p-8'>
                   <h2>🎉 Bem-vindo ao Sistema!</h2>
                 <h3>Detalhes do Usuário Logado:</h3>
                 <p>

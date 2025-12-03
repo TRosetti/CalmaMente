@@ -51,6 +51,7 @@ const formatDate = (isoDate: string): string => {
 
 
 const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
+    
 
     const API_USER_APPOINTMENTS_URL = `http://localhost:8081/agendamentos/meus/${userId}`;
 
@@ -223,6 +224,10 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
         }
     };
 
+    const handleCancelSchedule = () => {
+        setSelectedAppointment(null);
+    };
+
     return (
         <div className="p-8 bg-gray-50 min-h-screen w-full">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-8">
@@ -271,6 +276,7 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
                     </section>
 
                     {/* ## 2. Formulário de Agendamento */}
+
                     {selectedAppointment && (
                         <div className={styles.ScheduleForm}>
                             <section className="bg-white p-6 rounded-xl shadow-lg border border-indigo-100">
@@ -281,6 +287,8 @@ const AppointmentPage: React.FC<AppointmentClientPageProps> = ({ userId }) => {
                                 <ScheduleForm
                                     selectedAppointment={selectedAppointment}
                                     onSubmit={handleScheduleSubmit}
+                                    // Passar a nova função de cancelamento
+                                    onCancel={handleCancelSchedule} 
                                 />
                             </section>
                         </div>

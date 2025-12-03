@@ -34,14 +34,14 @@ export default function LogoutButton() {
             style={{ 
                 marginTop: '30px', 
                 padding: '10px 20px', 
-                backgroundColor: '#dc3545', // Cor vermelha para Logout
+                backgroundColor: '#1a1a1a', // Cor vermelha para Logout
                 color: 'white',
                 border: 'none',
                 borderRadius: '5px',
                 cursor: 'pointer'
             }}
         >
-            🚪 Fazer Logout
+            Sair da plataforma
         </button>
     );
 }

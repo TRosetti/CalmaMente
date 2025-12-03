@@ -51,8 +51,8 @@ const MOCK_STATUS = {
 
 // Card 1: Próxima Consulta
 const ConsultationCard: React.FC = () => (
-  <div className="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-indigo-500 min-h-[180px] transition-all hover:shadow-xl">
-    <div className="flex items-center text-indigo-700 mb-4">
+  <div className="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-violet-500 min-h-[180px] transition-all hover:shadow-xl">
+    <div className="flex items-center text-violet-700 mb-4">
       <Calendar className="w-6 h-6 mr-2" />
       <h2 className="text-xl font-bold">Próxima Consulta</h2>
     </div>
@@ -62,7 +62,7 @@ const ConsultationCard: React.FC = () => (
     <p className="text-sm text-gray-500 mb-6">
       {MOCK_CONSULTATION.time}
     </p>
-    <button className="w-full py-2 bg-indigo-500 text-white font-medium rounded-lg hover:bg-indigo-600 transition-colors">
+    <button className="w-full py-2 bg-violet-500 text-white font-medium rounded-lg hover:bg-violet-600 transition-colors">
       Agendar Nova Consulta
     </button>
   </div>
@@ -177,7 +177,7 @@ const GoalsCard: React.FC<{ goals: Goal[] }> = ({ goals }) => (
 // Card 6: Status do Diário (Achievements)
 const StatusCard: React.FC<{ status: typeof MOCK_STATUS }> = ({ status }) => (
   <div className="bg-white p-6 rounded-2xl shadow-lg min-h-[220px] transition-all hover:shadow-xl flex flex-col justify-between">
-    <h2 className="text-xl font-bold text-blue-700 mb-4">Stattuído em Diário</h2>
+    <h2 className="text-xl font-bold text-blue-700 mb-4"> Diário</h2>
     
     <div className="space-y-4">
       <div className="flex items-center text-gray-800">

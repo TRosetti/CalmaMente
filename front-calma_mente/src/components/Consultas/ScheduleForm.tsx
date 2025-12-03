@@ -6,9 +6,10 @@ import "react-datepicker/dist/react-datepicker.css";
 interface ScheduleFormProps {
     selectedAppointment: AvailableAppointment;
     onSubmit: (data: { date: string, time: string }) => void;
+    onCancel: () => void;
 }
 
-const ScheduleForm: React.FC<ScheduleFormProps> = ({ selectedAppointment, onSubmit }) => {
+const ScheduleForm: React.FC<ScheduleFormProps> = ({ selectedAppointment, onSubmit, onCancel }) => {
 
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [time, setTime] = useState('');
@@ -22,6 +23,11 @@ const ScheduleForm: React.FC<ScheduleFormProps> = ({ selectedAppointment, onSubm
         const day = String(dateObj.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     };
+
+    const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault(); // Previne o comportamento padrão do botão (como submit ou navegação)
+        onCancel(); // Chama a função que fechará o formulário no componente pai
+    }
 
     // Regra de 48h de antecedência
     const getMinDate = () => {
@@ -149,9 +155,12 @@ const ScheduleForm: React.FC<ScheduleFormProps> = ({ selectedAppointment, onSubm
             >
                 Confirmar Agendamento
             </button>
-            {/* <button className=' w-full py-3 font-bold rounded-lg border-2 border-violet-300 text-gray-500 hover:bg-gray-100 transition-colors' onClick={() => window.history.back()}>
+            <button 
+                type='button' // Mudar para type="button" para evitar submissão do form
+                className=' w-full py-3 font-bold rounded-lg border-2 border-violet-300 text-gray-500 hover:bg-gray-100 transition-colors' 
+                onClick={handleCancel}>
                 Cancelar
-            </button> */}
+            </button>
 
         </form>
     );
